@@ -1,0 +1,33 @@
+---
+title: 'HWclass6: R function'
+author: "Yufei Zhang"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+
+
+```{r}
+#1.The input of the function "PDB" is the protein structure file 
+#from protein data bank of the protein we are interested.
+#2.This function reads a protein structure file and plots the b factors 
+#for only the alpha carbons in chain A of the protein. 
+#This allows us to visualize and get insights of flexibility of the protein structure in the specific part in the protein drug interaction.
+#The output the function is a graph that plots the b factor against the residues.
+protein.drug.interactions <- function(PDB) {
+  library(bio3d)
+  s <- read.pdb(PDB) # 
+  s.chainA <- trim.pdb(s, chain="A", elety="CA")
+  s.b <- s.chainA$atom$b
+ return(plotb3(s.b, sse=s.chainA, typ="l", ylab="Bfactor"))
+}
+```
+
+```{r}
+protein.drug.interactions("4AKE")
+protein.drug.interactions("1AKE")
+protein.drug.interactions("1E4Y")
+```
+
+
+

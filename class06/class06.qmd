@@ -1,0 +1,64 @@
+---
+title: "R Functions Lab (Class 06)"
+author: "Yufei Zhang"
+format: pdf
+---
+
+Q1. Write a function grade() to determine an overall grade from a vector of student homework assignment scores dropping the lowest single score. If a student misses a homework (i.e. has an NA value) this can be used as a score to be potentially dropped. Your final function should be adquately explained with code comments and be able to work on an example class gradebook such as this one in CSV format: “https://tinyurl.com/gradeinput” [3pts]
+
+```{r}
+# Example input vectors to start with 
+student1 <- c(100, 100, 100, 100, 100, 100, 100, 90) 
+student2 <- c(100, NA, 90, 90, 90, 90, 97, 80) 
+student3 <- c(90, NA, NA, NA, NA, NA, NA, NA)
+```
+
+
+```{r}
+#find the min score and its corresponding index in one student
+which.min(student1)
+#get rid of min and calculate mean
+mean( student1[-which.min(student1)])
+```
+##Now we put this in a function
+```{r}
+#name of function is grade
+#pass in a stundet grade's vector as x
+grade <- function(x) {
+  #change na to 0
+  x[is.na(x)]<-0
+  #drop lowest score
+  mean( x[-which.min(x)])
+}
+```
+
+
+```{r}
+#example of using grade function to calculate grades
+grade(student1)
+grade(student2)
+grade(student3)
+```
+Q2. Using your grade() function and the supplied gradebook, Who is the top scoring student overall in the gradebook? [3pts]
+```{r}
+#read csv format gradebook in given url into R
+gradebook<-read.csv('https://tinyurl.com/gradeinput',row.names=1)
+```
+
+```{r}
+overallgrade <- apply(gradebook,1,grade)
+sort(overallgrade,decreasing=TRUE)
+```
+```{r}
+which.max(overallgrade)
+```
+Student 18 is the top scoring student.
+
+Q3. From your analysis of the gradebook, which homework was toughest on students (i.e. obtained the lowest scores overall? [2pts]
+```{r}
+#calculate mean for each hw and drop na to zeros
+avgscore<-apply(gradebook,2,mean,na.rm=TRUE)
+which.min(avgscore)
+```
+HW3 is the toughest hw.
+

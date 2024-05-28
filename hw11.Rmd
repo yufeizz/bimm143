@@ -1,0 +1,29 @@
+---
+title: "HW Class11 Pt.2 (Population analysis)"
+author: "Yufei Zhang"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+data = read.csv("antheridium_meth_genes.c522.txt", header = TRUE, sep = " ")
+summary(data)
+```
+```{r}
+# Calculate sample size for each genotype
+genotype_sample_size <- table(data$geno)
+genotype_sample_size
+```
+The median of expression of A/A,A/G,G/G are
+31.24847 25.06486 20.07363
+```{r}
+boxplot_data <- boxplot(exp ~ geno, data = data)
+boxplot_data$stats[3,]
+```
+
+
